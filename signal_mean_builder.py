@@ -84,7 +84,6 @@ def binary_signal(signal, window_min, window_max):
             final_s.append(0)
     return final_s
 def calibr(signal, mode, koef):
-    #mode - if 1, max calibration, if 0, min calibration
     sig_der = derivative(signal)
     sig_filt = low_pass_filter(sig_der, koef)
     calibr_max = sig_filt[0]
@@ -98,6 +97,13 @@ def calibr(signal, mode, koef):
 
 
     return calibr_max
+
+def latency_point(signal_filt, l_on, l_off, calibr_max, calibr_min):
+    N=0
+    for i in range(len(signal_filt)):
+        if (signal_filt[i]<calibr_max and signal_filt[i]>calibr_min and N==0):
+#turn in the motor
+
 
 if __name__ == "__main__":
     directory = os.getcwd()
