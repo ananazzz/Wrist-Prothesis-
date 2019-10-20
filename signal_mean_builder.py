@@ -100,9 +100,24 @@ def calibr(signal, mode, koef):
 
 def latency_point(signal_filt, l_on, l_off, calibr_max, calibr_min):
     N=0
+    latenced_sig=[]
     for i in range(len(signal_filt)):
-        if (signal_filt[i]<calibr_max and signal_filt[i]>calibr_min and N==0):
-#turn in the motor
+        j=i
+        if (signal_filt[i]<calibr_max and signal_filt[i]>calibr_min and (i+l_on)<=len(signal_filt)):
+            for j in range(l_on + i):
+                latenced_sig.append(1)
+        elif((signal_filt[i]>calibr_max or signal_filt[i]<calibr_min) and (i+l_off)<=len(signal_filt)):
+            for j in range(l_off + i):
+                latenced_sig.append(0)
+        elif ((signal_filt[i] < calibr_max and signal_filt[i] > calibr_min) and (i + l_on) > len(signal_filt)):
+            for j in range((l_on + i)-len(signal_filt)):
+                latenced_sig.append(1)
+        elif ((signal_filt[i] > calibr_max or signal_filt[i] < calibr_min) and (i + l_off) > len(signal_filt)):
+            for j in range((l_off + i)-len(signal_filt)):
+                latenced_sig.append(0)
+        else:
+            latenced_sig[i]=signal_filt[i]
+    return latenced_sig
 
 
 if __name__ == "__main__":
@@ -123,6 +138,7 @@ if __name__ == "__main__":
     calibr_max_win = calibr(randomed_signal, mode=True, koef=0.05)
     calibr_min_win = calibr(noize_sig, mode=False, koef=0.05)
     balanced_s, smooth_sig, binary_s = motor_control(randomed_signal_test, 0.05, w_max=calibr_max_win, w_min=calibr_min_win)
+    latenced_s= latency_point(smooth_sig, 10, 10, calibr_max_win, calibr_min_win)
 
     graphic(randomed_signal_test, binary_s, smooth_sig, w_min=calibr_min_win, w_max=calibr_max_win)
 
