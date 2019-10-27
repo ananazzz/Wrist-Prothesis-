@@ -83,40 +83,37 @@ def binary_signal(signal, window_min, window_max):
         else:
             final_s.append(0)
     return final_s
-def calibr(signal, mode, koef):
+def calibr(signal, koef):
     sig_der = derivative(signal)
     sig_filt = low_pass_filter(sig_der, koef)
     calibr_max = sig_filt[0]
     for i in range(len(sig_filt)):
-        if(mode == True):
-            if(sig_filt[i]>calibr_max):
-                calibr_max=sig_filt[i]
-        else:
-            if (sig_filt[i] < calibr_max):
-                calibr_max = sig_filt[i]
+        if(sig_filt[i]>calibr_max):
+            calibr_max=sig_filt[i]
 
 
     return calibr_max
 
 def latency_point(signal_filt, l_on, l_off, calibr_max, calibr_min):
-    N=0
-    latenced_sig=[]
+    latenced_sig = []
+    clock = 0
+    allow_change=True
+    motor_state=0
     for i in range(len(signal_filt)):
-        j=i
-        if (signal_filt[i]<calibr_max and signal_filt[i]>calibr_min and (i+l_on)<=len(signal_filt)):
-            for j in range(l_on + i):
-                latenced_sig.append(1)
-        elif((signal_filt[i]>calibr_max or signal_filt[i]<calibr_min) and (i+l_off)<=len(signal_filt)):
-            for j in range(l_off + i):
-                latenced_sig.append(0)
-        elif ((signal_filt[i] < calibr_max and signal_filt[i] > calibr_min) and (i + l_on) > len(signal_filt)):
-            for j in range((l_on + i)-len(signal_filt)):
-                latenced_sig.append(1)
-        elif ((signal_filt[i] > calibr_max or signal_filt[i] < calibr_min) and (i + l_off) > len(signal_filt)):
-            for j in range((l_off + i)-len(signal_filt)):
-                latenced_sig.append(0)
+        if(allow_change):
+            if(signal_filt[i]>calibr_min and signal_filt[i]<calibr_max):
+                motor_state = 1
+            else:
+                motor_state = 0
+            allow_change = False
+            clock=0
         else:
-            latenced_sig[i]=signal_filt[i]
+            clock+=1
+            if(motor_state==1 and clock>l_on):
+                allow_change=True
+            if(motor_state==0 and clock>l_off):
+                allow_change = True
+        latenced_sig.append(motor_state)
     return latenced_sig
 
 
@@ -131,16 +128,16 @@ if __name__ == "__main__":
     # b,a=motor_control(calibration_sig, 0.05)
     th_min, th_max = threshold(calibration_sig, 300)
     randomed_signal=signal_create(400,50,500,50)
-    noize_sig = signal_create(400, 50, 90, 50)
+    noize_sig = signal_create(400, 100, 120, 150)
     randomed_signal_test = signal_create(400, 100, 400, 150)
 
 
-    calibr_max_win = calibr(randomed_signal, mode=True, koef=0.05)
-    calibr_min_win = calibr(noize_sig, mode=False, koef=0.05)
+    calibr_max_win = calibr(randomed_signal, koef=0.02)
+    calibr_min_win = calibr(noize_sig, koef=0.02)
     balanced_s, smooth_sig, binary_s = motor_control(randomed_signal_test, 0.05, w_max=calibr_max_win, w_min=calibr_min_win)
-    latenced_s= latency_point(smooth_sig, 10, 10, calibr_max_win, calibr_min_win)
+    latenced_s= latency_point(smooth_sig, 80, 80, calibr_max_win, calibr_min_win)
 
-    graphic(randomed_signal_test, binary_s, smooth_sig, w_min=calibr_min_win, w_max=calibr_max_win)
+    graphic(randomed_signal_test, latenced_s, smooth_sig, w_min=calibr_min_win, w_max=calibr_max_win)
 
     # fs = 256
     # cutoff = 20
