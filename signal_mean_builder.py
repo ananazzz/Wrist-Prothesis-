@@ -135,7 +135,7 @@ if __name__ == "__main__":
     calibr_max_win = calibr(randomed_signal, koef=0.02)
     calibr_min_win = calibr(noize_sig, koef=0.02)
     balanced_s, smooth_sig, binary_s = motor_control(randomed_signal_test, 0.05, w_max=calibr_max_win, w_min=calibr_min_win)
-    latenced_s= latency_point(smooth_sig, 10, 10, calibr_max_win, calibr_min_win)
+    latenced_s = latency_point(smooth_sig, 10, 10, calibr_max_win, calibr_min_win)
 
     graphic(randomed_signal_test, latenced_s, smooth_sig, w_min=calibr_min_win, w_max=calibr_max_win)
 
