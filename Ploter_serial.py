@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import csv
 from struct import pack, unpack  # for binary pack
 from pylab import *
+import os
 
 parsed_data_arr = []
 ser_data_arr = []
@@ -31,33 +32,33 @@ def get_serial_data():
     serial_data = ser.read_until(packed_end_bytes, packed_length)  # read up to 0x7D8135 bytes
     parsed_data = unpack('bbbbbbbbbbbbbbbbbbbbbbbb', serial_data);
     parsed_data_arr.append(parsed_data);
-    print
-    parsed_data
+    #print parsed_data
     # Put the rest of your code you want here
     time.sleep(0.001)
 
 
 
-def save_data_to_csv(file_name):
+def save_data_to_csv(file_name, data_arr):
     with open(file_name, 'wb') as out:
         csv_out = csv.writer(out)
-        csv_out.writerow(['I', 'II', 'III', 'AVR', 'AVL', 'AVF'])  # comments in the end of this file
-        csv_out.writerow(ser.read() )
-        for row in parsed_data_arr:
-            csv_out.writerow(row[1:8])  # comments in the end of this file
+        #csv_out.writerow(['ch'])  # comments in the end of this file
+        #csv_out.writerow(ser.read() )
+        for value in data_arr:
+            csv_out.writerow([value])  # comments in the end of this file
 
 
 def main():
-
-
-    serial_init("COM4", ser)
-    time_s = 5
+    output_data_file_name = 'data/test_output.csv'
+    serial_init("/dev/ttyACM0", ser)
+    #serial_init("COM4", ser)
+    time_s = 15
     while (len(ser_data_arr) < time_s*1000):
         temp_value = int(ser.readline())
         if(temp_value<1024):
             ser_data_arr.append(temp_value)
-    # save_data_to_csv('test.csv')
+    save_data_to_csv(output_data_file_name, ser_data_arr) 
+    os.chmod(output_data_file_name, 0o777) #change permision in Ubuntu
     plt.plot(ser_data_arr)
     plt.show()
-if name == "__main__":
-    main()
+
+main()
