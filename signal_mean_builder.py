@@ -2,9 +2,21 @@ import numpy as np
 import helper as hl
 import matplotlib.pyplot as plt
 import os
+import csv
 import random
 from scipy.interpolate import interp1d
 from scipy import signal
+
+
+def open_file_and_read(file_name):
+    with open(file_name, 'r') as csv_file:
+        data_arr = []
+        data_arr_filtered = []
+        csv_out = csv.reader(csv_file, delimiter=',')
+        for value in csv_out:
+            # print(value[0])
+            data_arr.append(int(value[0]))
+        return data_arr
 
 def threshold(low_pass_signal, th_window):
     th_hold_max = low_pass_signal[0]
@@ -124,20 +136,26 @@ if __name__ == "__main__":
     signal_to_check = parser_data[0]
     file_name = file_P.rsplit("/", 1)[-1]
 
-    calibration_sig=signal_create(400,50,500,50)
+    read_signal=open_file_and_read('data/test_output_2.csv')
+
     # b,a=motor_control(calibration_sig, 0.05)
-    th_min, th_max = threshold(calibration_sig, 300)
-    randomed_signal=signal_create(400,50,500,50)
-    noize_sig = signal_create(400, 100, 120, 150)
-    randomed_signal_test = signal_create(400, 100, 400, 150)
+
+    # temp_der = derivative(read_signal)
+
+    # temp_low_pass = low_pass_filter(temp_der, 0.005)
+    # th_min, th_max = threshold(read_signal, 300)
+    # randomed_signal=signal_create(400,50,500,50)
+    # noize_sig = signal_create(400, 100, 120, 150)
+    # randomed_signal_test = signal_create(400, 100, 400, 150)
 
 
-    calibr_max_win = calibr(randomed_signal, koef=0.02)
-    calibr_min_win = calibr(noize_sig, koef=0.02)
-    balanced_s, smooth_sig, binary_s = motor_control(randomed_signal_test, 0.05, w_max=calibr_max_win, w_min=calibr_min_win)
-    latenced_s = latency_point(smooth_sig, 10, 10, calibr_max_win, calibr_min_win)
+    calibr_max_win = 9
+    calibr_min_win = 3
+    balanced_s, smooth_sig, binary_s = motor_control(read_signal, 0.001, w_max=calibr_max_win, w_min=calibr_min_win)
 
-    graphic(randomed_signal_test, latenced_s, smooth_sig, w_min=calibr_min_win, w_max=calibr_max_win)
+    latenced_s = latency_point(smooth_sig, 100, 500, calibr_max_win, calibr_min_win)
+
+    graphic(latenced_s, binary_s, smooth_sig, w_min=calibr_min_win, w_max=calibr_max_win)
 
     # fs = 256
     # cutoff = 20

@@ -61,7 +61,6 @@ def main():
     plt.plot(ser_data_arr)
     plt.show()
 
-main()
 
 def open_file_and_plot(file_name):
     with open(file_name, 'r') as csv_file:
@@ -73,8 +72,8 @@ def open_file_and_plot(file_name):
             data_arr.append(int(value[0]))
         
         
-        plt.plot(filtered_sig)
+        plt.plot(data_arr[1:])
         plt.show()
         
-open_file_and_plot('data/test_output_1.csv')
+open_file_and_plot('data/test_output_2.csv')
 #main()
