@@ -62,3 +62,19 @@ def main():
     plt.show()
 
 main()
+
+def open_file_and_plot(file_name):
+    with open(file_name, 'r') as csv_file:
+        data_arr = []
+        data_arr_filtered = []
+        csv_out = csv.reader(csv_file, delimiter=',')
+        for value in csv_out:
+            #print(value[0])
+            data_arr.append(int(value[0]))
+        
+        
+        plt.plot(filtered_sig)
+        plt.show()
+        
+open_file_and_plot('data/test_output_1.csv')
+#main()
