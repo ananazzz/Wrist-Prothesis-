@@ -87,10 +87,10 @@ def graphic(f_signal, s_signal, t_signal, w_min, w_max):
     plt.show()
 
 def binary_signal(signal, window_min, window_max):
-    safe_threshold = (window_max-window_min)*0.3 #0.3 = 30% of the window amplitude
+    safe_threshold = (window_max-window_min) #0.3 = 30% of the window amplitude
     final_s = []
     for i in range(len(signal)):
-        if(signal[i]>=window_min+safe_threshold and signal[i]<=window_max):
+        if(signal[i]>=window_min and signal[i]<=window_max):
             final_s.append(1)
         else:
             final_s.append(0)
@@ -112,19 +112,33 @@ def latency_point(signal_filt, l_on, l_off, calibr_max, calibr_min):
     allow_change=True
     motor_state=0
     for i in range(len(signal_filt)):
-        if(allow_change):
-            if(signal_filt[i]>calibr_min and signal_filt[i]<calibr_max):
-                motor_state = 1
-            else:
-                motor_state = 0
-            allow_change = False
-            clock=0
-        else:
-            clock+=1
-            if(motor_state==1 and clock>l_on):
-                allow_change=True
-            if(motor_state==0 and clock>l_off):
-                allow_change = True
+            # if(allow_change):
+            #         motor_state = 1
+            #     else:
+            #         motor_state = 0
+            #     allow_change = False
+            #     clock=0
+            # else:
+        if(signal_filt[i]==1 and clock>l_off):
+            motor_state = 1
+            clock = 0
+        if(signal_filt[i]==0 and clock>l_on):
+            motor_state=0
+            clock = 0
+
+        clock+=1
+        # if(motor_state==1 and clock>l_on and allow_change==True):
+        #     allow_change=True
+        #     motor_state = 0
+        #
+        # if(motor_state==0 and clock>l_off):
+        #     motor_state = 1
+        #
+        # print(motor_state)
+        # print(clock)
+        # allow_change=False
+        # clock = 0
+
         latenced_sig.append(motor_state)
     return latenced_sig
 
@@ -150,17 +164,17 @@ if __name__ == "__main__":
 
 
     calibr_max_win = 9
-    calibr_min_win = 3
-    balanced_s, smooth_sig, binary_s = motor_control(read_signal, 0.001, w_max=calibr_max_win, w_min=calibr_min_win)
+    calibr_min_win = 3.1
+    balanced_s, smooth_sig, binary_s = motor_control(read_signal, 0.005, w_max=calibr_max_win, w_min=calibr_min_win)
 
-    latenced_s = latency_point(smooth_sig, 100, 500, calibr_max_win, calibr_min_win)
+    latenced_s = latency_point(binary_s , 200, 300, calibr_max_win, calibr_min_win)
 
     graphic(latenced_s, binary_s, smooth_sig, w_min=calibr_min_win, w_max=calibr_max_win)
 
     # fs = 256
     # cutoff = 20
     # order = 6
-    # conditioned_signal = hl.butter_highpass_filter(signal_to_check, cutoff, fs, order)
+    # conditioned_signal = hl.buttersignal_mean_builder.py:132_highpass_filter(signal_to_check, cutoff, fs, order)
     #
     #
     # b, a = hl.get_filter(Fs = 256, power_line_fr = 50)

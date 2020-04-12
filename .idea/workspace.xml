@@ -7,12 +7,18 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1aQkJiqoJKvqhgsehkLxmHuN3kR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager" selected="Python.signal_mean_builder">
@@ -83,22 +89,22 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="679" y="159" width="619" height="787" key="#Ploter_serial/67.27.1853.1053@67.27.1853.1053" timestamp="1586074104963" />
-    <state width="1830" height="278" key="GridCell.Tab.0.bottom" timestamp="1586077200247">
+    <state width="1830" height="232" key="GridCell.Tab.0.bottom" timestamp="1586681941154">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1830" height="278" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1586077200247" />
-    <state width="1830" height="278" key="GridCell.Tab.0.center" timestamp="1586077200247">
+    <state width="1830" height="232" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1586681941154" />
+    <state width="1830" height="232" key="GridCell.Tab.0.center" timestamp="1586681941154">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1830" height="278" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1586077200247" />
-    <state width="1830" height="278" key="GridCell.Tab.0.left" timestamp="1586077200242">
+    <state width="1830" height="232" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1586681941154" />
+    <state width="1830" height="232" key="GridCell.Tab.0.left" timestamp="1586681941154">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1830" height="278" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1586077200242" />
-    <state width="1830" height="278" key="GridCell.Tab.0.right" timestamp="1586077200247">
+    <state width="1830" height="232" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1586681941154" />
+    <state width="1830" height="232" key="GridCell.Tab.0.right" timestamp="1586681941154">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1830" height="278" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1586077200247" />
+    <state width="1830" height="232" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1586681941154" />
     <state x="482" y="187" key="SettingsEditor" timestamp="1586075541218">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
